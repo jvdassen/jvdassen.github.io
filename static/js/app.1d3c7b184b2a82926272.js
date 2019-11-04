@@ -15,15 +15,8 @@ webpackJsonp([1],[
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_OSWindow_vue__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Screensaver_vue__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_DesktopIcon_vue__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_AboutPage_vue__ = __webpack_require__(38);
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__web_components_AboutPage__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__web_components_SettingsPage__ = __webpack_require__(42);
 //
 //
 //
@@ -88,6 +81,10 @@ webpackJsonp([1],[
 
 
 
+
+
+customElements.define('about-page', __WEBPACK_IMPORTED_MODULE_3__web_components_AboutPage__["a" /* default */]);
+customElements.define('settings-page', __WEBPACK_IMPORTED_MODULE_4__web_components_SettingsPage__["a" /* default */]);
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   name: 'app',
@@ -97,7 +94,6 @@ webpackJsonp([1],[
       showSettings: false,
       showScreensaver: false,
       hasLoaded: false,
-      showFullScreen: false,
       time: this.formatTime()
     };
   },
@@ -151,8 +147,7 @@ webpackJsonp([1],[
   components: {
     'os-window': __WEBPACK_IMPORTED_MODULE_0__components_OSWindow_vue__["a" /* default */],
     'screensaver': __WEBPACK_IMPORTED_MODULE_1__components_Screensaver_vue__["a" /* default */],
-    'desktop-icon': __WEBPACK_IMPORTED_MODULE_2__components_DesktopIcon_vue__["a" /* default */],
-    'about-page': __WEBPACK_IMPORTED_MODULE_3__components_AboutPage_vue__["a" /* default */]
+    'desktop-icon': __WEBPACK_IMPORTED_MODULE_2__components_DesktopIcon_vue__["a" /* default */]
   },
   methods: {
     shutdown: function () {},
@@ -168,19 +163,6 @@ webpackJsonp([1],[
     },
     reloadDocument: function () {
       location.reload();
-    },
-    requestFullScreen: function () {
-      var elem = document.querySelector('html');
-      try {
-        elem.webkitRequestFullScreen();
-      } catch (e) {
-        elem.requestFullscreen();
-      }
-      this.showFullScreen = true;
-    },
-    exitFullscreen: function () {
-      document.exitFullscreen();
-      this.showFullScreen = false;
     }
   }
 });
@@ -344,29 +326,7 @@ webpackJsonp([1],[
 });
 
 /***/ }),
-/* 13 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__web_components_AboutPage__ = __webpack_require__(40);
-//
-//
-//
-//
-
-
-customElements.define('about-page', __WEBPACK_IMPORTED_MODULE_0__web_components_AboutPage__["a" /* default */]);
-
-/* harmony default export */ __webpack_exports__["a"] = ({
-  name: 'desktopicon',
-  data() {
-    return {};
-  },
-  computed: {},
-  mounted: () => {}
-});
-
-/***/ }),
+/* 13 */,
 /* 14 */,
 /* 15 */,
 /* 16 */,
@@ -405,7 +365,7 @@ new __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */]({
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue__ = __webpack_require__(9);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_5f6a5232_hasScoped_false_transformToRequire_video_src_poster_source_src_img_src_image_xlink_href_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_397b8e96_hasScoped_false_transformToRequire_video_src_poster_source_src_img_src_image_xlink_href_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__ = __webpack_require__(44);
 function injectStyle (ssrContext) {
   __webpack_require__(26)
 }
@@ -425,7 +385,7 @@ var __vue_scopeId__ = null
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_5f6a5232_hasScoped_false_transformToRequire_video_src_poster_source_src_img_src_image_xlink_href_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_397b8e96_hasScoped_false_transformToRequire_video_src_poster_source_src_img_src_image_xlink_href_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
@@ -449,7 +409,7 @@ var Component = normalizeComponent(
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_OSWindow_vue__ = __webpack_require__(10);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_60af7d95_hasScoped_true_transformToRequire_video_src_poster_source_src_img_src_image_xlink_href_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_OSWindow_vue__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_e417dfec_hasScoped_true_transformToRequire_video_src_poster_source_src_img_src_image_xlink_href_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_OSWindow_vue__ = __webpack_require__(31);
 function injectStyle (ssrContext) {
   __webpack_require__(29)
 }
@@ -464,12 +424,12 @@ var __vue_template_functional__ = false
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = "data-v-60af7d95"
+var __vue_scopeId__ = "data-v-e417dfec"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_OSWindow_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_60af7d95_hasScoped_true_transformToRequire_video_src_poster_source_src_img_src_image_xlink_href_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_OSWindow_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_e417dfec_hasScoped_true_transformToRequire_video_src_poster_source_src_img_src_image_xlink_href_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_OSWindow_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
@@ -607,50 +567,7 @@ var esExports = { render: render, staticRenderFns: staticRenderFns }
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_AboutPage_vue__ = __webpack_require__(13);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a7371870_hasScoped_true_transformToRequire_video_src_poster_source_src_img_src_image_xlink_href_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_AboutPage_vue__ = __webpack_require__(45);
-function injectStyle (ssrContext) {
-  __webpack_require__(39)
-}
-var normalizeComponent = __webpack_require__(2)
-/* script */
-
-
-/* template */
-
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-a7371870"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_AboutPage_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_a7371870_hasScoped_true_transformToRequire_video_src_poster_source_src_img_src_image_xlink_href_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_AboutPage_vue__["a" /* default */],
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-
-/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
-
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 40 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lit_element__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lit_element__ = __webpack_require__(13);
 
 
 class About extends __WEBPACK_IMPORTED_MODULE_0_lit_element__["a" /* LitElement */] {
@@ -660,15 +577,20 @@ class About extends __WEBPACK_IMPORTED_MODULE_0_lit_element__["a" /* LitElement 
         Jan von der Assen
       </header>
       <section class="wrapped">
-        <p>- (Web) Developer</p>
-        <p>- Zurich, Switzerland</p>
-        <p>- Software Systems MSc Student <a href="https://www.ifi.uzh.ch/en.html">@UZH</a></p>
+        <ul class="wrapped">
+          <li>(Web) Developer</li>
+          <li>Zurich, Switzerland</li>
+          <li>Software Systems MSc Student <a href="https://www.ifi.uzh.ch/en.html">@UZH</a></li>
+        </ul>
       </section>
+      <hr>
       <footer class="wrapped">
         <p class="title">Skills and Interests</p>
-        <p>- Web Development - EcmaScript, Web-Components, PWA, lit-html 🔥, React.js, Vue.js </p>
-        <p>- Backend Development - Python, golang, Java 12</p>
-        <p>- Computer Networks, Docker, Linux, <a href="https://github.com/bazo-blockchain">Blockchain</a></p>
+        <ul class="wrapped">
+          <li>Web Development - EcmaScript, Web-Components, PWA, lit-html 🔥, React.js, Vue.js </li>
+          <li>Backend Development - Python, golang, Java 12</li>
+          <li>Computer Networks, Docker, Linux, <a href="https://github.com/bazo-blockchain">Blockchain</a></li>
+        </ul>
       </footer>
     `;
   }
@@ -689,15 +611,24 @@ class About extends __WEBPACK_IMPORTED_MODULE_0_lit_element__["a" /* LitElement 
       a {
         font-style: italic;
       }
-      main {
-        margin: 10px 0 10px 0;
-      }
       .title {
-        font-style: italic bold;
+        font-style: italic;
+      }
+      hr {
+        color: #ccccff;
       }
       footer {
         padding-top: 10px;
-        background-color: #e3f0f4;
+      }
+      ul {
+        padding: 0;
+      }
+      ul li {
+        list-style: none;
+      }
+      ul li:before {
+        content: "- ";
+        margin-left: -15px;
       }
     `;
   }
@@ -706,29 +637,163 @@ class About extends __WEBPACK_IMPORTED_MODULE_0_lit_element__["a" /* LitElement 
 
 
 /***/ }),
+/* 39 */,
+/* 40 */,
 /* 41 */,
-/* 42 */,
-/* 43 */,
-/* 44 */,
-/* 45 */
+/* 42 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('about-page')}
-var staticRenderFns = []
-var esExports = { render: render, staticRenderFns: staticRenderFns }
-/* harmony default export */ __webpack_exports__["a"] = (esExports);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lit_element__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_fullscreen__ = __webpack_require__(43);
+
+
+
+class Settings extends __WEBPACK_IMPORTED_MODULE_0_lit_element__["a" /* LitElement */] {
+  render() {
+    var { fullScreenMode, screenSaverEnabled } = this.getSettingsFromStorage();
+    var fullsScreenSupported = Object(__WEBPACK_IMPORTED_MODULE_1__utils_fullscreen__["a" /* checkFullScreenCapabilities */])().browserSupported;
+
+    return __WEBPACK_IMPORTED_MODULE_0_lit_element__["c" /* html */]`
+      <header class="wrapped">
+        Settings
+      </header>
+      <section class="wrapped">
+        <ul>
+          <li>
+            <input type="checkbox"
+                   ?checked="${fullScreenMode}"
+                   ?disabled="${!fullsScreenSupported}"
+                   @click="${this.checkHandler}"
+                   title="fullscreenmode">
+            <span>Fullscreen mode</span>
+          </li>
+          <li>
+            <input type="checkbox" ?checked="${screenSaverEnabled}" @click="${this.checkHandler}" title="screensaverenabled">
+            <span>Enable Screensaver</span>
+          </li>
+        </ul>
+      </section>
+    `;
+  }
+  checkHandler(event) {
+    var setting = event.target.title;
+    var checked = event.target.checked;
+
+    localStorage.setItem(setting, checked);
+
+    if (setting === 'fullscreenmode') {
+      this.setFullScreen(checked);
+    }
+  }
+  setFullScreen(enabled) {
+    if (enabled) {
+      Object(__WEBPACK_IMPORTED_MODULE_1__utils_fullscreen__["c" /* enableFullScreen */])();
+    } else {
+      Object(__WEBPACK_IMPORTED_MODULE_1__utils_fullscreen__["b" /* disableFullScreen */])();
+    }
+  }
+  getSettingsFromStorage() {
+    var fullScreenMode, screenSaverEnabled;
+    try {
+      fullScreenMode = localStorage.getItem('fullscreenmode') === 'true';
+      screenSaverEnabled = localStorage.getItem('screensaverenabled') === 'true';
+    } catch (err) {
+      console.warn('Error reading from local storage: ', err);
+      fullScreenMode = false;
+      screenSaverEnabled = false;
+    }
+    return { fullScreenMode, screenSaverEnabled };
+  }
+  static get styles() {
+    return __WEBPACK_IMPORTED_MODULE_0_lit_element__["b" /* css */]`
+      .wrapped {
+        padding: 0 20px 0 20px;
+      }
+      header {
+        background-color: #ccccff;
+        color: #6d6d82;
+        height: 40px;
+        font-size: 1.2em;
+        font-style: italic;
+        display: flex;
+        align-items: center;
+      }
+      ul li {
+        list-style: none;
+      }
+      ul {
+        padding: 0;
+      }
+    `;
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Settings;
+
 
 /***/ }),
-/* 46 */
+/* 43 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"app"}},[(_vm.hasLoaded)?_c('header',[_c('span',{staticClass:"main-header-title main-header-image",on:{"click":_vm.requestFullScreen}},[_c('img',{attrs:{"src":"/static/img/computer.ico"}})]),_vm._v(" "),_c('div',{staticClass:"main-header-title"},[_vm._v("File\n      "),_c('div',{staticClass:"main-header-content"},[_c('div',{on:{"click":function($event){_vm.showSettings = !_vm.showSettings}}},[_vm._v("Settings")]),_vm._v(" "),_c('div',{on:{"click":_vm.reloadDocument}},[_vm._v("Restart")])])]),_vm._v(" "),_vm._m(0),_vm._v(" "),_c('span',{staticClass:"main-header-title",on:{"click":function($event){_vm.showAbout = !_vm.showAbout}}},[_vm._v("About")]),_vm._v(" "),_c('span',{staticClass:"main-header-title right"},[_vm._v(_vm._s(_vm.time))])]):_vm._e(),_vm._v(" "),(_vm.hasLoaded)?_c('main',[_c('desktop-icon',{staticClass:"desktopicon",attrs:{"icon":"static/img/folder_system.png","title":"Settings"},on:{"click":function($event){_vm.showSettings = !_vm.showSettings}}}),_vm._v(" "),_c('desktop-icon',{staticClass:"desktopicon",attrs:{"icon":"static/img/folder_floppy.png","title":"About"},on:{"click":function($event){_vm.showAbout = !_vm.showAbout}}}),_vm._v(" "),_c('desktop-icon',{staticClass:"desktopicon",attrs:{"icon":"static/img/sad_mac.png","title":"Trash"}}),_vm._v(" "),(_vm.showAbout)?_c('os-window',{staticStyle:{"width":"400px"},attrs:{"title":'About'},on:{"close":function($event){_vm.showAbout = false}}},[_c('about-page')],1):_vm._e(),_vm._v(" "),(_vm.showSettings)?_c('os-window',{attrs:{"title":'Settings'},on:{"close":function($event){_vm.showSettings = false}}},[_c('div',{staticClass:"content-wrapper"},[_c('div',[_c('span',[_vm._v("Use Fullscreen")])]),_vm._v(" "),_c('div',[_c('span',[_vm._v("Enable Screensaver")])])])]):_vm._e()],1):_vm._e(),_vm._v(" "),(_vm.showScreensaver)?_c('screensaver'):_vm._e()],1)}
-var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"main-header-title"},[_vm._v("Go\n      "),_c('div',{staticClass:"main-header-content"},[_c('div',{},[_c('a',{attrs:{"href":"https://github.com/jvdassen"}},[_vm._v("GitHub")])]),_vm._v(" "),_c('div',{},[_c('a',{attrs:{"href":"https://linkedin.com/in/jan-von-der-assen-975083105"}},[_vm._v("LinkedIn")])])])])}]
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return enableFullScreen; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return disableFullScreen; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return checkFullScreenCapabilities; });
+
+
+function enableFullScreen(selector = 'html') {
+  try {
+    var { browserSupported, fullScreen } = checkFullScreenCapabilities();
+    if (browserSupported) {
+      fullScreen(selector);
+    } else {
+      console.warn('Your browser doesnt support the fullscreen API');
+    }
+  } catch (e) {
+    console.warn('Unable to set fullscreen: ', e);
+  }
+}
+
+function disableFullScreen() {
+  document.exitFullscreen();
+}
+
+function checkFullScreenCapabilities(selector = 'html') {
+  var elem = document.querySelector(selector);
+  if (firefoxSupported()) {
+    return {
+      browserSupported: true,
+      fullScreen: () => {
+        elem.requestFullscreen();
+      }
+    };
+  } else if (chromeSupported()) {
+    return {
+      browserSupported: true,
+      fullScreen: () => {
+        elem.webkitRequestFullScreen();
+      }
+    };
+  }
+
+  function firefoxSupported() {
+    return 'requestFullscreen' in elem;
+  }
+  function chromeSupported() {
+    return 'webkitRequestFullScreen' in elem;
+  }
+}
+
+/***/ }),
+/* 44 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"app"}},[(_vm.hasLoaded)?_c('header',[_vm._m(0),_vm._v(" "),_c('div',{staticClass:"main-header-title"},[_vm._v("File\n      "),_c('div',{staticClass:"main-header-content"},[_c('div',{on:{"click":function($event){_vm.showSettings = !_vm.showSettings}}},[_vm._v("Settings")]),_vm._v(" "),_c('div',{on:{"click":_vm.reloadDocument}},[_vm._v("Restart")])])]),_vm._v(" "),_vm._m(1),_vm._v(" "),_c('span',{staticClass:"main-header-title",on:{"click":function($event){_vm.showAbout = !_vm.showAbout}}},[_vm._v("About")]),_vm._v(" "),_c('span',{staticClass:"main-header-title right"},[_vm._v(_vm._s(_vm.time))])]):_vm._e(),_vm._v(" "),(_vm.hasLoaded)?_c('main',[_c('desktop-icon',{staticClass:"desktopicon",attrs:{"icon":"static/img/folder_system.png","title":"Settings"},on:{"click":function($event){_vm.showSettings = !_vm.showSettings}}}),_vm._v(" "),_c('desktop-icon',{staticClass:"desktopicon",attrs:{"icon":"static/img/folder_floppy.png","title":"About"},on:{"click":function($event){_vm.showAbout = !_vm.showAbout}}}),_vm._v(" "),_c('desktop-icon',{staticClass:"desktopicon",attrs:{"icon":"static/img/sad_mac.png","title":"Trash"}}),_vm._v(" "),(_vm.showAbout)?_c('os-window',{staticStyle:{"width":"400px"},attrs:{"title":'About'},on:{"close":function($event){_vm.showAbout = false}}},[_c('about-page')],1):_vm._e(),_vm._v(" "),(_vm.showSettings)?_c('os-window',{staticStyle:{"width":"300px"},attrs:{"title":'Settings'},on:{"close":function($event){_vm.showSettings = false}}},[_c('settings-page')],1):_vm._e()],1):_vm._e(),_vm._v(" "),(_vm.showScreensaver)?_c('screensaver'):_vm._e()],1)}
+var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('span',{staticClass:"main-header-title main-header-image"},[_c('img',{attrs:{"src":"/static/img/computer.ico"}})])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"main-header-title"},[_vm._v("Go\n      "),_c('div',{staticClass:"main-header-content"},[_c('div',{},[_c('a',{attrs:{"href":"https://github.com/jvdassen"}},[_vm._v("GitHub")])]),_vm._v(" "),_c('div',{},[_c('a',{attrs:{"href":"https://linkedin.com/in/jan-von-der-assen-975083105"}},[_vm._v("LinkedIn")])])])])}]
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
 
 /***/ })
 ],[20]);
-//# sourceMappingURL=app.d29228a0d2e879b47419.js.map
+//# sourceMappingURL=app.1d3c7b184b2a82926272.js.map
