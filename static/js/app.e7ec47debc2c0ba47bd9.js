@@ -133,15 +133,23 @@ customElements.define('settings-page', __WEBPACK_IMPORTED_MODULE_4__web_componen
       var mouseMoveId;
 
       mouseMoveId = setTimeout(function () {
-        app.showScreensaver = true;
+        app.showScreensaver = getScreenSaverSetting().enabled;
       }, 15000);
       document.onmousemove = function () {
         app.showScreensaver = false;
         clearTimeout(mouseMoveId);
         mouseMoveId = setTimeout(function () {
-          app.showScreensaver = true;
+          app.showScreensaver = getScreenSaverSetting().enabled;
         }, 15000);
       };
+
+      function getScreenSaverSetting() {
+        var stored = localStorage.getItem('screensaverenabled');
+        var defaultValue = null;
+        return {
+          enabled: stored === 'true' || stored === defaultValue
+        };
+      }
     }
   },
   components: {
@@ -365,7 +373,7 @@ new __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */]({
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue__ = __webpack_require__(9);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_397b8e96_hasScoped_false_transformToRequire_video_src_poster_source_src_img_src_image_xlink_href_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_924f0686_hasScoped_false_transformToRequire_video_src_poster_source_src_img_src_image_xlink_href_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__ = __webpack_require__(44);
 function injectStyle (ssrContext) {
   __webpack_require__(26)
 }
@@ -385,7 +393,7 @@ var __vue_scopeId__ = null
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_397b8e96_hasScoped_false_transformToRequire_video_src_poster_source_src_img_src_image_xlink_href_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_924f0686_hasScoped_false_transformToRequire_video_src_poster_source_src_img_src_image_xlink_href_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
@@ -696,8 +704,11 @@ class Settings extends __WEBPACK_IMPORTED_MODULE_0_lit_element__["a" /* LitEleme
   getSettingsFromStorage() {
     var fullScreenMode, screenSaverEnabled;
     try {
-      fullScreenMode = localStorage.getItem('fullscreenmode') === 'true';
-      screenSaverEnabled = localStorage.getItem('screensaverenabled') === 'true';
+      var storedFullScreen = localStorage.getItem('fullscreenmode');
+      var storedScreenSaver = localStorage.getItem('screensaverenabled');
+
+      fullScreenMode = storedFullScreen === 'true';
+      screenSaverEnabled = storedScreenSaver === 'true' || storedScreenSaver === null;
     } catch (err) {
       console.warn('Error reading from local storage: ', err);
       fullScreenMode = false;
@@ -796,4 +807,4 @@ var esExports = { render: render, staticRenderFns: staticRenderFns }
 
 /***/ })
 ],[20]);
-//# sourceMappingURL=app.1d3c7b184b2a82926272.js.map
+//# sourceMappingURL=app.e7ec47debc2c0ba47bd9.js.map
