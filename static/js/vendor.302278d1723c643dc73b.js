@@ -429,8 +429,234 @@ module.exports = g;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lit_html__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lit_html_lib_shady_render_js__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_updating_element_js__ = __webpack_require__(18);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_decorators_js__ = __webpack_require__(41);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lit_html_lit_html_js__ = __webpack_require__(5);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_4_lit_html_lit_html_js__["b"]; });
+/* unused harmony reexport svg */
+/* unused harmony reexport TemplateResult */
+/* unused harmony reexport SVGTemplateResult */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_css_tag_js__ = __webpack_require__(19);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_5__lib_css_tag_js__["a"]; });
+/**
+ * @license
+ * Copyright (c) 2017 The Polymer Project Authors. All rights reserved.
+ * This code may only be used under the BSD style license found at
+ * http://polymer.github.io/LICENSE.txt
+ * The complete set of authors may be found at
+ * http://polymer.github.io/AUTHORS.txt
+ * The complete set of contributors may be found at
+ * http://polymer.github.io/CONTRIBUTORS.txt
+ * Code distributed by Google as part of the polymer project is also
+ * subject to an additional IP rights grant found at
+ * http://polymer.github.io/PATENTS.txt
+ */
+
+
+
+
+
+
+
+
+// IMPORTANT: do not change the property name or the assignment expression.
+// This line will be used in regexes to search for LitElement usage.
+// TODO(justinfagnani): inject version number at build time
+(window['litElementVersions'] || (window['litElementVersions'] = []))
+    .push('2.2.1');
+/**
+ * Minimal implementation of Array.prototype.flat
+ * @param arr the array to flatten
+ * @param result the accumlated result
+ */
+function arrayFlat(styles, result = []) {
+    for (let i = 0, length = styles.length; i < length; i++) {
+        const value = styles[i];
+        if (Array.isArray(value)) {
+            arrayFlat(value, result);
+        }
+        else {
+            result.push(value);
+        }
+    }
+    return result;
+}
+/** Deeply flattens styles array. Uses native flat if available. */
+const flattenStyles = (styles) => styles.flat ? styles.flat(Infinity) : arrayFlat(styles);
+class LitElement extends __WEBPACK_IMPORTED_MODULE_2__lib_updating_element_js__["a" /* UpdatingElement */] {
+    /** @nocollapse */
+    static finalize() {
+        // The Closure JS Compiler does not always preserve the correct "this"
+        // when calling static super methods (b/137460243), so explicitly bind.
+        super.finalize.call(this);
+        // Prepare styling that is stamped at first render time. Styling
+        // is built from user provided `styles` or is inherited from the superclass.
+        this._styles =
+            this.hasOwnProperty(JSCompiler_renameProperty('styles', this)) ?
+                this._getUniqueStyles() :
+                this._styles || [];
+    }
+    /** @nocollapse */
+    static _getUniqueStyles() {
+        // Take care not to call `this.styles` multiple times since this generates
+        // new CSSResults each time.
+        // TODO(sorvell): Since we do not cache CSSResults by input, any
+        // shared styles will generate new stylesheet objects, which is wasteful.
+        // This should be addressed when a browser ships constructable
+        // stylesheets.
+        const userStyles = this.styles;
+        const styles = [];
+        if (Array.isArray(userStyles)) {
+            const flatStyles = flattenStyles(userStyles);
+            // As a performance optimization to avoid duplicated styling that can
+            // occur especially when composing via subclassing, de-duplicate styles
+            // preserving the last item in the list. The last item is kept to
+            // try to preserve cascade order with the assumption that it's most
+            // important that last added styles override previous styles.
+            const styleSet = flatStyles.reduceRight((set, s) => {
+                set.add(s);
+                // on IE set.add does not return the set.
+                return set;
+            }, new Set());
+            // Array.from does not work on Set in IE
+            styleSet.forEach((v) => styles.unshift(v));
+        }
+        else if (userStyles) {
+            styles.push(userStyles);
+        }
+        return styles;
+    }
+    /**
+     * Performs element initialization. By default this calls `createRenderRoot`
+     * to create the element `renderRoot` node and captures any pre-set values for
+     * registered properties.
+     */
+    initialize() {
+        super.initialize();
+        this.renderRoot =
+            this.createRenderRoot();
+        // Note, if renderRoot is not a shadowRoot, styles would/could apply to the
+        // element's getRootNode(). While this could be done, we're choosing not to
+        // support this now since it would require different logic around de-duping.
+        if (window.ShadowRoot && this.renderRoot instanceof window.ShadowRoot) {
+            this.adoptStyles();
+        }
+    }
+    /**
+     * Returns the node into which the element should render and by default
+     * creates and returns an open shadowRoot. Implement to customize where the
+     * element's DOM is rendered. For example, to render into the element's
+     * childNodes, return `this`.
+     * @returns {Element|DocumentFragment} Returns a node into which to render.
+     */
+    createRenderRoot() {
+        return this.attachShadow({ mode: 'open' });
+    }
+    /**
+     * Applies styling to the element shadowRoot using the `static get styles`
+     * property. Styling will apply using `shadowRoot.adoptedStyleSheets` where
+     * available and will fallback otherwise. When Shadow DOM is polyfilled,
+     * ShadyCSS scopes styles and adds them to the document. When Shadow DOM
+     * is available but `adoptedStyleSheets` is not, styles are appended to the
+     * end of the `shadowRoot` to [mimic spec
+     * behavior](https://wicg.github.io/construct-stylesheets/#using-constructed-stylesheets).
+     */
+    adoptStyles() {
+        const styles = this.constructor._styles;
+        if (styles.length === 0) {
+            return;
+        }
+        // There are three separate cases here based on Shadow DOM support.
+        // (1) shadowRoot polyfilled: use ShadyCSS
+        // (2) shadowRoot.adoptedStyleSheets available: use it.
+        // (3) shadowRoot.adoptedStyleSheets polyfilled: append styles after
+        // rendering
+        if (window.ShadyCSS !== undefined && !window.ShadyCSS.nativeShadow) {
+            window.ShadyCSS.ScopingShim.prepareAdoptedCssText(styles.map((s) => s.cssText), this.localName);
+        }
+        else if (__WEBPACK_IMPORTED_MODULE_5__lib_css_tag_js__["b" /* supportsAdoptingStyleSheets */]) {
+            this.renderRoot.adoptedStyleSheets =
+                styles.map((s) => s.styleSheet);
+        }
+        else {
+            // This must be done after rendering so the actual style insertion is done
+            // in `update`.
+            this._needsShimAdoptedStyleSheets = true;
+        }
+    }
+    connectedCallback() {
+        super.connectedCallback();
+        // Note, first update/render handles styleElement so we only call this if
+        // connected after first update.
+        if (this.hasUpdated && window.ShadyCSS !== undefined) {
+            window.ShadyCSS.styleElement(this);
+        }
+    }
+    /**
+     * Updates the element. This method reflects property values to attributes
+     * and calls `render` to render DOM via lit-html. Setting properties inside
+     * this method will *not* trigger another update.
+     * * @param _changedProperties Map of changed properties with old values
+     */
+    update(changedProperties) {
+        super.update(changedProperties);
+        const templateResult = this.render();
+        if (templateResult instanceof __WEBPACK_IMPORTED_MODULE_0_lit_html__["a" /* TemplateResult */]) {
+            this.constructor
+                .render(templateResult, this.renderRoot, { scopeName: this.localName, eventContext: this });
+        }
+        // When native Shadow DOM is used but adoptedStyles are not supported,
+        // insert styling after rendering to ensure adoptedStyles have highest
+        // priority.
+        if (this._needsShimAdoptedStyleSheets) {
+            this._needsShimAdoptedStyleSheets = false;
+            this.constructor._styles.forEach((s) => {
+                const style = document.createElement('style');
+                style.textContent = s.cssText;
+                this.renderRoot.appendChild(style);
+            });
+        }
+    }
+    /**
+     * Invoked on each update to perform rendering tasks. This method must return
+     * a lit-html TemplateResult. Setting properties inside this method will *not*
+     * trigger the element to update.
+     */
+    render() {
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = LitElement;
+
+/**
+ * Ensure this class is marked as `finalized` as an optimization ensuring
+ * it will not needlessly try to `finalize`.
+ *
+ * Note this property name is a string to prevent breaking Closure JS Compiler
+ * optimizations. See updating-element.ts for more information.
+ */
+LitElement['finalized'] = true;
+/**
+ * Render method used to render the lit-html TemplateResult to the element's
+ * DOM.
+ * @param {TemplateResult} Template to render.
+ * @param {Element|DocumentFragment} Node into which to render.
+ * @param {String} Element name.
+ * @nocollapse
+ */
+LitElement.render = __WEBPACK_IMPORTED_MODULE_1_lit_html_lib_shady_render_js__["a" /* render */];
+//# sourceMappingURL=lit-element.js.map
+
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_default_template_processor_js__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_template_result_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_template_result_js__ = __webpack_require__(8);
 /* unused harmony reexport DefaultTemplateProcessor */
 /* unused harmony reexport defaultTemplateProcessor */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_directive_js__ = __webpack_require__(15);
@@ -442,7 +668,7 @@ module.exports = g;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_part_js__ = __webpack_require__(16);
 /* unused harmony reexport noChange */
 /* unused harmony reexport nothing */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_parts_js__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_parts_js__ = __webpack_require__(6);
 /* unused harmony reexport AttributeCommitter */
 /* unused harmony reexport AttributePart */
 /* unused harmony reexport BooleanAttributePart */
@@ -455,10 +681,10 @@ module.exports = g;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_render_js__ = __webpack_require__(17);
 /* unused harmony reexport parts */
 /* unused harmony reexport render */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__lib_template_factory_js__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__lib_template_factory_js__ = __webpack_require__(9);
 /* unused harmony reexport templateCaches */
 /* unused harmony reexport templateFactory */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_template_instance_js__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_template_instance_js__ = __webpack_require__(7);
 /* unused harmony reexport TemplateInstance */
 /* unused harmony reexport SVGTemplateResult */
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_1__lib_template_result_js__["b"]; });
@@ -530,15 +756,15 @@ const svg = (strings, ...values) => new __WEBPACK_IMPORTED_MODULE_1__lib_templat
 //# sourceMappingURL=lit-html.js.map
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__directive_js__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dom_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__part_js__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__template_instance_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__template_result_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__template_instance_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__template_result_js__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__template_js__ = __webpack_require__(0);
 /**
  * @license
@@ -1008,7 +1234,7 @@ const getOptions = (o) => o &&
 //# sourceMappingURL=parts.js.map
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1155,7 +1381,7 @@ class TemplateInstance {
 //# sourceMappingURL=template-instance.js.map
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1280,7 +1506,7 @@ class SVGTemplateResult extends TemplateResult {
 //# sourceMappingURL=template-result.js.map
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1338,241 +1564,15 @@ const templateCaches = new Map();
 //# sourceMappingURL=template-factory.js.map
 
 /***/ }),
-/* 9 */,
 /* 10 */,
 /* 11 */,
 /* 12 */,
-/* 13 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lit_html__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lit_html_lib_shady_render_js__ = __webpack_require__(39);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_updating_element_js__ = __webpack_require__(18);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_decorators_js__ = __webpack_require__(41);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lit_html_lit_html_js__ = __webpack_require__(4);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_4_lit_html_lit_html_js__["b"]; });
-/* unused harmony reexport svg */
-/* unused harmony reexport TemplateResult */
-/* unused harmony reexport SVGTemplateResult */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_css_tag_js__ = __webpack_require__(19);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_5__lib_css_tag_js__["a"]; });
-/**
- * @license
- * Copyright (c) 2017 The Polymer Project Authors. All rights reserved.
- * This code may only be used under the BSD style license found at
- * http://polymer.github.io/LICENSE.txt
- * The complete set of authors may be found at
- * http://polymer.github.io/AUTHORS.txt
- * The complete set of contributors may be found at
- * http://polymer.github.io/CONTRIBUTORS.txt
- * Code distributed by Google as part of the polymer project is also
- * subject to an additional IP rights grant found at
- * http://polymer.github.io/PATENTS.txt
- */
-
-
-
-
-
-
-
-
-// IMPORTANT: do not change the property name or the assignment expression.
-// This line will be used in regexes to search for LitElement usage.
-// TODO(justinfagnani): inject version number at build time
-(window['litElementVersions'] || (window['litElementVersions'] = []))
-    .push('2.2.1');
-/**
- * Minimal implementation of Array.prototype.flat
- * @param arr the array to flatten
- * @param result the accumlated result
- */
-function arrayFlat(styles, result = []) {
-    for (let i = 0, length = styles.length; i < length; i++) {
-        const value = styles[i];
-        if (Array.isArray(value)) {
-            arrayFlat(value, result);
-        }
-        else {
-            result.push(value);
-        }
-    }
-    return result;
-}
-/** Deeply flattens styles array. Uses native flat if available. */
-const flattenStyles = (styles) => styles.flat ? styles.flat(Infinity) : arrayFlat(styles);
-class LitElement extends __WEBPACK_IMPORTED_MODULE_2__lib_updating_element_js__["a" /* UpdatingElement */] {
-    /** @nocollapse */
-    static finalize() {
-        // The Closure JS Compiler does not always preserve the correct "this"
-        // when calling static super methods (b/137460243), so explicitly bind.
-        super.finalize.call(this);
-        // Prepare styling that is stamped at first render time. Styling
-        // is built from user provided `styles` or is inherited from the superclass.
-        this._styles =
-            this.hasOwnProperty(JSCompiler_renameProperty('styles', this)) ?
-                this._getUniqueStyles() :
-                this._styles || [];
-    }
-    /** @nocollapse */
-    static _getUniqueStyles() {
-        // Take care not to call `this.styles` multiple times since this generates
-        // new CSSResults each time.
-        // TODO(sorvell): Since we do not cache CSSResults by input, any
-        // shared styles will generate new stylesheet objects, which is wasteful.
-        // This should be addressed when a browser ships constructable
-        // stylesheets.
-        const userStyles = this.styles;
-        const styles = [];
-        if (Array.isArray(userStyles)) {
-            const flatStyles = flattenStyles(userStyles);
-            // As a performance optimization to avoid duplicated styling that can
-            // occur especially when composing via subclassing, de-duplicate styles
-            // preserving the last item in the list. The last item is kept to
-            // try to preserve cascade order with the assumption that it's most
-            // important that last added styles override previous styles.
-            const styleSet = flatStyles.reduceRight((set, s) => {
-                set.add(s);
-                // on IE set.add does not return the set.
-                return set;
-            }, new Set());
-            // Array.from does not work on Set in IE
-            styleSet.forEach((v) => styles.unshift(v));
-        }
-        else if (userStyles) {
-            styles.push(userStyles);
-        }
-        return styles;
-    }
-    /**
-     * Performs element initialization. By default this calls `createRenderRoot`
-     * to create the element `renderRoot` node and captures any pre-set values for
-     * registered properties.
-     */
-    initialize() {
-        super.initialize();
-        this.renderRoot =
-            this.createRenderRoot();
-        // Note, if renderRoot is not a shadowRoot, styles would/could apply to the
-        // element's getRootNode(). While this could be done, we're choosing not to
-        // support this now since it would require different logic around de-duping.
-        if (window.ShadowRoot && this.renderRoot instanceof window.ShadowRoot) {
-            this.adoptStyles();
-        }
-    }
-    /**
-     * Returns the node into which the element should render and by default
-     * creates and returns an open shadowRoot. Implement to customize where the
-     * element's DOM is rendered. For example, to render into the element's
-     * childNodes, return `this`.
-     * @returns {Element|DocumentFragment} Returns a node into which to render.
-     */
-    createRenderRoot() {
-        return this.attachShadow({ mode: 'open' });
-    }
-    /**
-     * Applies styling to the element shadowRoot using the `static get styles`
-     * property. Styling will apply using `shadowRoot.adoptedStyleSheets` where
-     * available and will fallback otherwise. When Shadow DOM is polyfilled,
-     * ShadyCSS scopes styles and adds them to the document. When Shadow DOM
-     * is available but `adoptedStyleSheets` is not, styles are appended to the
-     * end of the `shadowRoot` to [mimic spec
-     * behavior](https://wicg.github.io/construct-stylesheets/#using-constructed-stylesheets).
-     */
-    adoptStyles() {
-        const styles = this.constructor._styles;
-        if (styles.length === 0) {
-            return;
-        }
-        // There are three separate cases here based on Shadow DOM support.
-        // (1) shadowRoot polyfilled: use ShadyCSS
-        // (2) shadowRoot.adoptedStyleSheets available: use it.
-        // (3) shadowRoot.adoptedStyleSheets polyfilled: append styles after
-        // rendering
-        if (window.ShadyCSS !== undefined && !window.ShadyCSS.nativeShadow) {
-            window.ShadyCSS.ScopingShim.prepareAdoptedCssText(styles.map((s) => s.cssText), this.localName);
-        }
-        else if (__WEBPACK_IMPORTED_MODULE_5__lib_css_tag_js__["b" /* supportsAdoptingStyleSheets */]) {
-            this.renderRoot.adoptedStyleSheets =
-                styles.map((s) => s.styleSheet);
-        }
-        else {
-            // This must be done after rendering so the actual style insertion is done
-            // in `update`.
-            this._needsShimAdoptedStyleSheets = true;
-        }
-    }
-    connectedCallback() {
-        super.connectedCallback();
-        // Note, first update/render handles styleElement so we only call this if
-        // connected after first update.
-        if (this.hasUpdated && window.ShadyCSS !== undefined) {
-            window.ShadyCSS.styleElement(this);
-        }
-    }
-    /**
-     * Updates the element. This method reflects property values to attributes
-     * and calls `render` to render DOM via lit-html. Setting properties inside
-     * this method will *not* trigger another update.
-     * * @param _changedProperties Map of changed properties with old values
-     */
-    update(changedProperties) {
-        super.update(changedProperties);
-        const templateResult = this.render();
-        if (templateResult instanceof __WEBPACK_IMPORTED_MODULE_0_lit_html__["a" /* TemplateResult */]) {
-            this.constructor
-                .render(templateResult, this.renderRoot, { scopeName: this.localName, eventContext: this });
-        }
-        // When native Shadow DOM is used but adoptedStyles are not supported,
-        // insert styling after rendering to ensure adoptedStyles have highest
-        // priority.
-        if (this._needsShimAdoptedStyleSheets) {
-            this._needsShimAdoptedStyleSheets = false;
-            this.constructor._styles.forEach((s) => {
-                const style = document.createElement('style');
-                style.textContent = s.cssText;
-                this.renderRoot.appendChild(style);
-            });
-        }
-    }
-    /**
-     * Invoked on each update to perform rendering tasks. This method must return
-     * a lit-html TemplateResult. Setting properties inside this method will *not*
-     * trigger the element to update.
-     */
-    render() {
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = LitElement;
-
-/**
- * Ensure this class is marked as `finalized` as an optimization ensuring
- * it will not needlessly try to `finalize`.
- *
- * Note this property name is a string to prevent breaking Closure JS Compiler
- * optimizations. See updating-element.ts for more information.
- */
-LitElement['finalized'] = true;
-/**
- * Render method used to render the lit-html TemplateResult to the element's
- * DOM.
- * @param {TemplateResult} Template to render.
- * @param {Element|DocumentFragment} Node into which to render.
- * @param {String} Element name.
- * @nocollapse
- */
-LitElement.render = __WEBPACK_IMPORTED_MODULE_1_lit_html_lib_shady_render_js__["a" /* render */];
-//# sourceMappingURL=lit-element.js.map
-
-/***/ }),
+/* 13 */,
 /* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__parts_js__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__parts_js__ = __webpack_require__(6);
 /**
  * @license
  * Copyright (c) 2017 The Polymer Project Authors. All rights reserved.
@@ -1742,8 +1742,8 @@ const nothing = {};
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__dom_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__parts_js__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__template_factory_js__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__parts_js__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__template_factory_js__ = __webpack_require__(9);
 /**
  * @license
  * Copyright (c) 2017 The Polymer Project Authors. All rights reserved.
@@ -14985,10 +14985,10 @@ module.exports = function listToStyles (parentId, list) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__dom_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modify_template_js__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__render_js__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__template_factory_js__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__template_instance_js__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__template_factory_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__template_instance_js__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__template_js__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lit_html_js__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lit_html_js__ = __webpack_require__(5);
 /* unused harmony reexport html */
 /* unused harmony reexport svg */
 /* unused harmony reexport TemplateResult */
@@ -15633,7 +15633,8 @@ const eventOptions = (options) =>
 /* 42 */,
 /* 43 */,
 /* 44 */,
-/* 45 */
+/* 45 */,
+/* 46 */
 /***/ (function(module, exports) {
 
 /*
@@ -15715,7 +15716,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -15944,4 +15945,4 @@ function applyToTag (styleElement, obj) {
 
 /***/ })
 ]);
-//# sourceMappingURL=vendor.1e3b3c0705893e3d396c.js.map
+//# sourceMappingURL=vendor.302278d1723c643dc73b.js.map
